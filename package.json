@@ -1,8 +1,8 @@
 {
-  "name": "nuxt-dynamic-htaccess",
+  "name": "nuxt-dynamic-query",
   "version": "1.0.0",
   "description": "Convert dynamic route to query param for nuxt static build",
-  "repository": "Alzera/nuxt-dynamic-htaccess",
+  "repository": "Alzera/nuxt-dynamic-query",
   "license": "MIT",
   "type": "module",
   "exports": {
