@@ -22,8 +22,14 @@ function generateRandomString() {
 
 <template>
   <div>
-    <NuxtLink :to="detailLink">detail</NuxtLink>
-    <NuxtLink :to="allLink">all</NuxtLink>
-    <NuxtLink :to="nestedLink">nested</NuxtLink>
+    <NuxtLink :to="detailLink">
+      detail
+    </NuxtLink>
+    <NuxtLink :to="allLink">
+      all
+    </NuxtLink>
+    <NuxtLink :to="nestedLink">
+      nested
+    </NuxtLink>
   </div>
 </template>

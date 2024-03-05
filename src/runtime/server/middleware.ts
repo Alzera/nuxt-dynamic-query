@@ -1,8 +1,7 @@
 import { defineEventHandler, setHeader } from 'h3'
+import dynamicQuery from '#dynamic-query'
 
 import type { RewriteLib } from '../../utilities'
-
-import dynamicQuery from '#dynamic-query'
 
 export default defineEventHandler((event) => {
   setHeader(event, 'Content-Type', 'text/plain')

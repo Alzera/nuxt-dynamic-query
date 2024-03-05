@@ -1,15 +1,14 @@
-import { addPlugin, addServerHandler, addTemplate, createResolver, defineNuxtModule } from "nuxt/kit"
-
-import type { RewriteLib, Param } from './utilities'
+import { addPlugin, addServerHandler, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit"
 
 import { MIDDLEWARE_NAME } from './utilities'
+import type { RewriteLib, Param } from './utilities'
 
 export default defineNuxtModule({
   meta: {
     name: 'dynamic-query',
   },
-  setup(opts, nuxt) {
-    if (nuxt.options.dev || nuxt.options.router.options.hashMode) {
+  setup(_, nuxt) {
+    if (nuxt.options.dev) {
       return;
     }
     const { resolve } = createResolver(import.meta.url)
@@ -17,7 +16,6 @@ export default defineNuxtModule({
     addServerHandler({ route: `/.htaccess`, handler: resolve('runtime/server/middleware.ts') })
 
     let rewritedRoutes: RewriteLib[] = []
-    let rewrites: string[] = []
     
     nuxt.options.alias['#dynamic-query'] = (addTemplate({
       filename: 'dynamic-query.mjs',
@@ -35,17 +33,15 @@ export default defineNuxtModule({
         nitro.options.prerender.routes.push(`/.htaccess`)
       })
       nuxt.hooks.hook("pages:extend", (pages2): void => {
-        rewrites = []
         rewritedRoutes = []
-        for (let i in pages2) {
-          let params: Param[] = []
+        for (const i in pages2) {
+          const params: Param[] = []
           const oldUrl = pages2[i].path
           let newUrl = oldUrl
           let rewriteSource = oldUrl.startsWith('/') ? oldUrl.slice(1) : oldUrl
 
-          const matches = pages2[i].path.match(/\:([a-zA-Z0-9_-]+)\((\.\*)?\)\*?/g)
-          if (matches) for (let i = 0; i < matches.length; i++) {
-            const m = matches[i]
+          const matches = pages2[i].path.match(/:([a-zA-Z0-9_-]+)\((\.\*)?\)\*?/g)
+          if (matches) for (const m of matches) {
             if (m.includes('*')) {
               const name = m.split('(')[0].slice(1)
               newUrl = replaceAll(newUrl, m, name + '-all')
